@@ -6,36 +6,21 @@ import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Notification } from './Notification/Notification';
 
 export const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const [reviews, setReview] = useState({ good: 0, neutral: 0, bad: 0 });
 
   const onLeaveFeedback = name => {
-    if (name === 'good') {
-      setGood(prevState => {
-        return prevState + 1;
-      });
-    }
-    if (name === 'neutral') {
-      setNeutral(prevState => {
-        return prevState + 1;
-      });
-    }
-    if (name === 'bad') {
-      setBad(prevState => {
-        return prevState + 1;
-      });
-    }
+    const newReviews = { ...reviews, [name]: reviews[name] + 1 };
+    setReview(newReviews);
   };
 
   const countTotalFeedback = () => {
-    let total = good + neutral + bad;
+    let total = reviews.good + reviews.neutral + reviews.bad;
     return total;
   };
 
   const countPositiveFeedbackPercentage = () => {
     let total = countTotalFeedback();
-    let positivePercentage = Math.ceil((good * 100) / total);
+    let positivePercentage = Math.ceil((reviews.good * 100) / total);
     return positivePercentage;
   };
 
@@ -61,9 +46,9 @@ export const App = () => {
       <Section title="Statistics">
         {total > 0 ? (
           <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
+            good={reviews.good}
+            neutral={reviews.neutral}
+            bad={reviews.bad}
             total={total}
             positivePercentage={positivePercentage}
           />
